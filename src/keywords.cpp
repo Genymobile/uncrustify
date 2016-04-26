@@ -159,7 +159,7 @@ static const chunk_tag_t keywords[] =
    { "float",            CT_TYPE,         LANG_ALLC                                                                   },
    { "for",              CT_FOR,          LANG_ALL                                                                    }, // PAWN
    { "for_each",         CT_FOR,          LANG_CPP                                                                    },
-   { "foreach",          CT_FOR,          LANG_CS | LANG_D | LANG_VALA                                                },
+   { "foreach",          CT_FOR,          LANG_CPP | LANG_CS | LANG_D | LANG_VALA                                     },
    { "foreach_reverse",  CT_FOR,          LANG_D                                                                      },
    { "forward",          CT_FORWARD,      LANG_PAWN                                                                   }, // PAWN
    { "friend",           CT_FRIEND,       LANG_CPP                                                                    },
