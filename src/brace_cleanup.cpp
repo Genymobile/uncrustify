@@ -492,6 +492,10 @@ static void parse_cleanup(struct parse_frame *frm, chunk_t *pc)
                parent = frm->pse[frm->pse_tos].type;
                frm->sparen_count++;
             }
+            else if (prev->type == CT_Q_PROPERTY)
+            {
+               parent = CT_Q_PROPERTY_ARGS;
+            }
             else if (prev->type == CT_FUNCTION)
             {
                set_chunk_type(pc, CT_FPAREN_OPEN);
@@ -600,7 +604,9 @@ static void parse_cleanup(struct parse_frame *frm, chunk_t *pc)
       if (prev) {
          prev = chunk_get_prev_ncnl(prev);
       }
-      if (prev && prev->type == CT_MACRO_FUNC && is_macro_func_nosm(prev->text())) {
+      if (prev &&
+          ((prev->type == CT_MACRO_FUNC && is_macro_func_nosm(prev->text())) ||
+          prev->type == CT_Q_PROPERTY)) {
          frm->stmt_count = 0;
          frm->expr_count = 0;
       }
