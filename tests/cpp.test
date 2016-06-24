@@ -286,3 +286,7 @@
 33048 bug_i_405.cfg                    cpp/bug_i_405.cpp
 33049 pp-pragma.cfg                    cpp/pp-pragma.cpp
 33051 empty.cfg                        cpp/bug_i_503.cpp
+
+
+
+50000 initlist_leading_commas.cfg      cpp/initlist_leading_commas.cpp
