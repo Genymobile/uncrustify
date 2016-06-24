@@ -290,3 +290,4 @@
 
 
 50000 initlist_leading_commas.cfg      cpp/initlist_leading_commas.cpp
+50001 macro_func_nosm.cfg              cpp/macro_func_nosm.cpp
