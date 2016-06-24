@@ -11,6 +11,7 @@
 #include "args.h"
 #include "prototypes.h"
 #include "uncrustify_version.h"
+#include "macro_func_nosm.h"
 #include <cstring>
 #ifdef HAVE_STRINGS_H
 #include <strings.h>  /* strcasecmp() */
@@ -1778,6 +1779,11 @@ int load_option_file(const char *filename)
       else if (strcasecmp(args[0], "macro-else") == 0)
       {
          add_keyword(args[1], CT_MACRO_ELSE);
+      }
+      else if (strcasecmp(args[0], "macro-func-nosm") == 0)
+      {
+         add_keyword(args[1], CT_MACRO_FUNC);
+         add_macro_func_nosm(args[1]);
       }
       else if (strcasecmp(args[0], "set") == 0)
       {
