@@ -1730,6 +1730,22 @@ void indent_text(void)
                }
             }
          }
+         if ((cpd.settings[UO_indent_continue_special].n != 0) && (pc->type == CT_SPAREN_OPEN) && (!skipped))
+         {
+            frm.pse[frm.pse_tos].indent = frm.pse[frm.pse_tos - 1].indent;
+            if (pc->level == pc->brace_level)
+            {
+               if ((cpd.settings[UO_use_indent_continue_only_once].b) &&
+                   (frm.pse[frm.pse_tos].indent_cont) &&
+                   (vardefcol != 0)) {
+                  // if vardefcol isn't zero, use it
+                  frm.pse[frm.pse_tos].indent = vardefcol;
+               } else {
+                  frm.pse[frm.pse_tos].indent      += cpd.settings[UO_indent_continue_special].n;
+                  frm.pse[frm.pse_tos].indent_cont = true;
+               }
+            }
+         }
          frm.pse[frm.pse_tos].indent_tmp = frm.pse[frm.pse_tos].indent;
          LOG_FMT(LINDLINE, "%s(%d): frm.pse_tos=%zu, ... indent_tmp=%zu\n",
                  __func__, __LINE__, frm.pse_tos, frm.pse[frm.pse_tos].indent_tmp);
