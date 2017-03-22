@@ -16,12 +16,20 @@
 #include "newlines.h"
 #include "prototypes.h"
 #include "tokenize_cleanup.h"
+#include "macro_func_ignore_args.h"
 
 #include <cstdio>
 #include <cstdlib>
 #include "unc_ctype.h"
 #include <cassert>
 
+/**
+ * Mark the content inside the open paren as CT_PP_IGNORE. This is called for
+ * macros whose arguments should not be formatted by uncrustify.
+ *
+ * @param po   Pointer to the open parenthesis
+ */
+static void mark_macro_function_ignore_args(chunk_t *po);
 
 /**
  * Flags everything from the open paren to the close paren.
@@ -536,6 +544,32 @@ void flag_series(chunk_t *start, chunk_t *end, UINT64 set_flags, UINT64 clr_flag
    }
 }
 
+static void mark_macro_function_ignore_args(chunk_t *po)
+{
+   LOG_FUNC_ENTRY();
+   chunk_t *paren_close;
+
+   paren_close = chunk_skip_to_match(po, scope_e::PREPROC);
+   if (paren_close == nullptr)
+   {
+      LOG_FMT(LERR, "mark_macro_function_ignore_args: no match for [%s] at [%zu:%zu]",
+              po->text(), po->orig_line, po->orig_col);
+      log_func_stack_inline(LERR);
+      cpd.error_count++;
+      return;
+   }
+
+   if (po != paren_close)
+   {
+      chunk_t *pc;
+      for (pc = chunk_get_next(po, scope_e::PREPROC);
+          pc != paren_close;
+          pc = chunk_get_next(pc, scope_e::PREPROC))
+      {
+        set_chunk_type(pc, CT_PP_IGNORE);
+      }
+   }
+}
 
 static chunk_t *flag_parens(chunk_t *po, UINT64 flags, c_token_t opentype,
                             c_token_t parenttype, bool parent_all)
@@ -1478,7 +1512,14 @@ void do_symbol_check(chunk_t *prev, chunk_t *pc, chunk_t *next)
     */
    if (pc->type == CT_MACRO_FUNC)
    {
-      flag_parens(next, PCF_IN_FCN_CALL, CT_FPAREN_OPEN, CT_MACRO_FUNC, false);
+      if (is_macro_func_ignore_args(pc->str.c_str()))
+      {
+         mark_macro_function_ignore_args(next);
+      }
+      else
+      {
+         flag_parens(next, PCF_IN_FCN_CALL, CT_FPAREN_OPEN, CT_MACRO_FUNC, false);
+      }
    }
 
    if ((pc->type == CT_MACRO_OPEN) ||

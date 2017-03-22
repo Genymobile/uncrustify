@@ -390,3 +390,4 @@
 34140 bug_1027.cfg                     cpp/bug_1027.cpp
 
 50001 macro_func_no_semicolon.cfg      cpp/macro_func_no_semicolon.cpp
+50002 macro_func_ignore_args.cfg       cpp/macro_func_ignore_args.cpp

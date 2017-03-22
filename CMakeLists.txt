@@ -179,6 +179,7 @@ add_executable(uncrustify
   src/logger.cpp
   src/logmask.cpp
   src/macro_func_no_semicolon.cpp
+  src/macro_func_ignore_args.cpp
   src/md5.cpp
   src/newlines.cpp
   src/options.cpp
