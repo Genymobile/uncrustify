@@ -12,6 +12,7 @@
 #include "uncrustify_types.h"
 #include "prototypes.h"
 #include "chunk_list.h"
+#include "macro_func_no_semicolon.h"
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -627,6 +628,21 @@ static void parse_cleanup(parse_frame_t *frm, chunk_t *pc)
    else if (patcls == pattern_class_e::ELSE)
    {
       push_fmr_pse(frm, pc, brace_stage_e::ELSEIF, "+ComplexElse");
+   }
+
+   /* Check if we are at the end of a macro function which does not require
+    * an ending semi-colon.
+    * If we are, mark the end of the statement.
+    */
+   if (pc->type == CT_PAREN_CLOSE) {
+      chunk_t *prev = chunk_get_prev_type(pc, CT_PAREN_OPEN, pc->level);
+      if (prev) {
+         prev = chunk_get_prev_ncnl(prev);
+      }
+      if (prev && prev->type == CT_MACRO_FUNC && is_macro_func_no_semicolon(prev->text())) {
+         frm->stmt_count = 0;
+         frm->expr_count = 0;
+      }
    }
 
    /* Mark simple statement/expression starts

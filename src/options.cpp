@@ -15,6 +15,7 @@
 #include "error_types.h"
 #include "keywords.h"
 #include "defines.h"
+#include "macro_func_no_semicolon.h"
 #include <cstring>
 #ifdef HAVE_STRINGS_H
 #include <strings.h>  /* strcasecmp() */
@@ -2006,6 +2007,11 @@ void process_option_line(char *configLine, const char *filename)
             fprintf(stderr, "%s:%d unknown type '%s':", filename, cpd.line_number, args[1]);
          }
       }
+   }
+   else if (strcasecmp(args[0], "macro-func-no-semicolon") == 0)
+   {
+      add_keyword(args[1], CT_MACRO_FUNC);
+      add_macro_func_no_semicolon(args[1]);
    }
 #ifndef EMSCRIPTEN
    else if (strcasecmp(args[0], "include") == 0)

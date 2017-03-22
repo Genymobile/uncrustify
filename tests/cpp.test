@@ -388,3 +388,5 @@
 34135 new_op_paren_open_close.cfg      cpp/new_op.cpp
 
 34140 bug_1027.cfg                     cpp/bug_1027.cpp
+
+50001 macro_func_no_semicolon.cfg      cpp/macro_func_no_semicolon.cpp

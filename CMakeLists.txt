@@ -178,6 +178,7 @@ add_executable(uncrustify
   src/lang_pawn.cpp
   src/logger.cpp
   src/logmask.cpp
+  src/macro_func_no_semicolon.cpp
   src/md5.cpp
   src/newlines.cpp
   src/options.cpp
